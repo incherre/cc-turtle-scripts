@@ -1,0 +1,38 @@
+os.loadAPI("common")
+
+local function isLava()
+  local success, data = turtle.inspectDown()
+  if success then
+    if string.find(data.name, "lava") then
+      return true
+    end
+  end
+  return false
+end
+
+local function pickupLine()
+  for i = 1, 5 do
+    if isLava() and common.isHungry(50) then
+      turtle.placeDown()
+      turtle.refuel()
+    end
+  
+    turtle.forward()
+  end
+
+  if isLava() and common.isHungry(50) then
+    turtle.placeDown()
+    turtle.refuel()
+  end
+end
+
+for i = 1, 5 do
+  pickupLine()
+  turtle.turnLeft()
+  turtle.forward()
+  turtle.turnLeft()
+  pickupLine()
+  turtle.turnRight()
+  turtle.forward()
+  turtle.turnRight()
+end

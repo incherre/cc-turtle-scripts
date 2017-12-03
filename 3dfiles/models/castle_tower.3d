@@ -1,0 +1,290 @@
+--File named "castle_tower.3d" created on day 155 at 1:26 PM
+--  File structure is struct[relative x][relative y][relative z] = "modname:blockname"
+--  x is forward, y is upward, z is rightward
+struct = {
+  [1] = {
+    [1] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [5] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [6] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [7] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [8] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [9] = {
+      [0] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+  }, 
+  [2] = {
+    [1] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:planks", 
+    }, 
+    [5] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [6] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [7] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [8] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+    [9] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:planks", 
+    }, 
+  }, 
+  [3] = {
+    [1] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:planks", 
+    }, 
+    [5] = {
+      [5] = "minecraft:iron_bars", 
+    }, 
+    [6] = {
+      [5] = "minecraft:iron_bars", 
+    }, 
+    [7] = {
+      [5] = "minecraft:iron_bars", 
+    }, 
+    [8] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:planks", 
+    }, 
+  }, 
+  [4] = {
+    [1] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [5] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+    [5] = {
+      [0] = "minecraft:stone", 
+      [5] = "minecraft:stone", 
+    }, 
+    [6] = {
+      [0] = "minecraft:stone", 
+      [5] = "minecraft:stone", 
+    }, 
+    [7] = {
+      [0] = "minecraft:stone", 
+      [5] = "minecraft:stone", 
+    }, 
+    [8] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+    [9] = {
+      [0] = "minecraft:stone", 
+      [5] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:planks", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:planks", 
+      [5] = "minecraft:stone", 
+      [0] = "minecraft:stone", 
+    }, 
+  }, 
+  [5] = {
+    [1] = {
+      [4] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [4] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [4] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:stone", 
+    }, 
+    [5] = {
+      [1] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [6] = {
+      [1] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [7] = {
+      [1] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [8] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [9] = {
+      [1] = "minecraft:stone", 
+      [4] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:planks", 
+      [3] = "minecraft:planks", 
+      [4] = "minecraft:stone", 
+    }, 
+  }, 
+  [0] = {
+    [1] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [2] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [3] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [4] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [5] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:iron_bars", 
+      [3] = "minecraft:stone", 
+    }, 
+    [6] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:iron_bars", 
+      [3] = "minecraft:stone", 
+    }, 
+    [7] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:iron_bars", 
+      [3] = "minecraft:stone", 
+    }, 
+    [8] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [9] = {
+      [1] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+    [0] = {
+      [1] = "minecraft:stone", 
+      [2] = "minecraft:stone", 
+      [3] = "minecraft:stone", 
+    }, 
+  }, 
+}

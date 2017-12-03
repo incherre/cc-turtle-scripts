@@ -1,0 +1,111 @@
+--A script for a sorting turtle
+os.loadAPI("common")
+
+local tArgs = { ... }
+if #tArgs ~= 1 or (#tArgs >= 1 and tArgs[1] == "help") then
+  print("Usage: sorter <reciever_id>")
+  return
+end
+
+local id = tonumber(tArgs[1])
+local role = "Sorter "
+
+local source = {x, y, z, d}
+local misc = {x, y, z, d}
+local trash = {x, y, z, d}
+
+local fuel = {x, y, z, d}
+local smelt = {x, y, z, d}
+local commonMinerals = {x, y, z, d}
+local uncommonMinerals = {x, y, z, d}
+local organics = {x, y, z, d}
+local flintMaker = {x, y, z, d}
+local compressor = {x, y, z, d}
+
+local sortingKey = {
+  ["minecraft:sapling"] = {organics, fuel},
+  ["minecraft:seeds"] = {organics},
+  ["minecraft:log"] = {organics, smelt},
+  ["minecraft:wheat"] = {organics},
+
+  ["minecraft:cobblestone"] = {commonMinerals, smelt},
+  ["minecraft:stone"] = {commonMinerals},
+  ["minecraft:dirt"] = {commonMinerals},
+  ["minecraft:sand"] = {commonMinerals, smelt},
+  ["minecraft:gravel"] = {commonMinerals, flintMaker},
+
+  ["minecraft:coal"] = {fuel, uncommonMinerals},
+  ["minecraft:redstone"] = {uncommonMinerals, compressor},
+  ["minecraft:redstone_block"] = {uncommonMinerals},
+  ["minecraft:obsidian"] = {uncommonMinerals},
+  ["minecraft:diamond"] = {uncommonMinerals},
+  ["minecraft:iron_ore"] = {smelt, uncommonMinerals},
+  ["minecraft:iron_ingot"] = {uncommonMinerals},
+  ["minecraft:gold_ore"] = {smelt, uncommonMinerals},
+  ["minecraft:gold_ingot"] = {uncommonMinerals},
+
+  --["minecraft:"] = {},
+}
+
+local function take()
+  if fd == 4 then
+    return turtle.suckUp()
+  elseif fd == 5 then
+    return turtle.suckDown()
+  else
+    return turtle.suck()
+  end
+end
+
+local function put(td)
+  if td == 4 then
+    return turtle.dropUp()
+  elseif td == 5 then
+    return turtle.dropDown()
+  else
+    return turtle.drop()
+  end
+end
+
+local function goToLocation(location)
+  common.goToLocation(location[1], location[2], location[3], location[4])
+end
+
+turtle.select(1)
+local item
+local destinations
+local delivered
+
+while true do
+  if turtle.getFuelLevel() < 500 then
+    common.sendLog(id, role .. os.computerLabel() .. " fuel low.")
+  end
+
+  item = turtle.getItemDetail()
+  if item then
+    if sortingKey[item.name] then
+      destinations = sortingKey[item.name]
+    else
+      destinations = {misc}
+    end
+
+    delivered = false
+
+    for i = 1, #destinations do
+      goToLocation(destinations[i])
+      if put(destinations[i][4]) then
+        delivered = true
+        break
+      end
+    end
+
+    if not delivered then
+      goToLocation(trash)
+      put(trash[4])
+    end
+  end
+
+  while not take() do
+    os.sleep(30)
+  end
+end 

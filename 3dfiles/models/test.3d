@@ -1,0 +1,38 @@
+-- File named "test.3d" created on day 149 at 8:35 AM
+struct = {
+  [1] = {
+    [0] = {
+      [0] = "minecraft:cobblestone",
+    },
+  },
+  [2] = {
+    [0] = {
+      [0] = "minecraft:cobblestone",
+    },
+    [2] = {
+      [2] = "minecraft:cobblestone",
+    },
+  },
+  [3] = {
+    [0] = {
+      [0] = "minecraft:cobblestone",
+    },
+  },
+  [0] = {
+    [1] = {
+      [0] = "minecraft:cobblestone",
+    },
+    [2] = {
+      [0] = "minecraft:cobblestone",
+    },
+    [3] = {
+      [0] = "minecraft:cobblestone",
+    },
+    [0] = {
+      [1] = "minecraft:cobblestone",
+      [2] = "minecraft:cobblestone",
+      [3] = "minecraft:cobblestone",
+      [0] = "minecraft:cobblestone",
+    },
+  },
+}
