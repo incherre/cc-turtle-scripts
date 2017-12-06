@@ -145,9 +145,7 @@ function try(funct, id, errStr, role)
     local message = errStr .. role .. os.computerLabel()
     print(message)
 
-    rednet.open("left")
-    rednet.send(id, message)
-    rednet.close()
+    sendLog(id, message)
     error()
   end
 end

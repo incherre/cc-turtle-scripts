@@ -3,7 +3,7 @@ os.loadAPI("common")
 
 local tArgs = { ... }
 if #tArgs ~= 9 or (#tArgs >= 1 and tArgs[1] == "help") then
-  print("Usage: farmer <x_from> <y_from> <z_from> <d_from> <x_to> <y_to> <z_to> <d_to> <reciever_id>")
+  print("Usage: courier <x_from> <y_from> <z_from> <d_from> <x_to> <y_to> <z_to> <d_to> <reciever_id>")
   print("  directions: 0 = north, 1 = east, 2 = south, 3 = west, 4 = up, 5 = down")
   return
 end
@@ -67,11 +67,13 @@ local function dropOff()
 end
 
 local function pickUp()
-  for i = 1, 16 do
+  turtle.select(1)
+  while not take() do
+    os.sleep(60)
+  end
+  for i = 2, 16 do
     turtle.select(i)
-    while not take() do
-      os.sleep(60)
-    end
+    take()
   end
   turtle.select(1)
 end

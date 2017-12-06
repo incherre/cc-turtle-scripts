@@ -10,27 +10,42 @@ end
 local id = tonumber(tArgs[1])
 local role = "Sorter "
 
-local source = {x, y, z, d}
-local misc = {x, y, z, d}
-local trash = {x, y, z, d}
+local source = {5, 61, 199, 2}
+local misc = {5, 61, 194, 1}
+local trash = {5, 62, 194, 0}
 
-local fuel = {x, y, z, d}
-local smelt = {x, y, z, d}
-local commonMinerals = {x, y, z, d}
-local uncommonMinerals = {x, y, z, d}
-local organics = {x, y, z, d}
-local flintMaker = {x, y, z, d}
-local compressor = {x, y, z, d}
+local commonMinerals = {5, 63, 199, 1}
+local uncommonMinerals = {5, 62, 199, 1}
+local cobblestone = {5, 61, 199, 1}
+local organics = {5, 63, 198, 1}
+local dirt = {5, 62, 198, 1}
+local stone = {5, 61, 198, 1}
+local mobDrops = {5, 63, 197, 1}
+local redstone = {5, 62, 197, 1}
+local computers = {5, 61, 197, 1}
+local building = {5, 63, 196, 1}
+local tools = {5, 62, 196, 1}
+local enchanting = {5, 61, 196, 1}
+local dyes = {5, 63, 195, 1}
+local potions = {5, 62, 195, 1}
+local food = {5, 61, 195, 1}
+local nether = {5, 63, 194, 1}
+
+local fuel = {4, 61, 198, 3}
+local smelt = {4, 62, 199, 3}
+local flintMaker = trash --TODO, temp set to trash
+local compressor =  misc --TODO, temp set to misc
+local cowFarm = trash --TODO, temp set to trash
 
 local sortingKey = {
   ["minecraft:sapling"] = {organics, fuel},
   ["minecraft:seeds"] = {organics},
   ["minecraft:log"] = {organics, smelt},
-  ["minecraft:wheat"] = {organics},
+  ["minecraft:wheat"] = {organics, cowFarm},
 
-  ["minecraft:cobblestone"] = {commonMinerals, smelt},
-  ["minecraft:stone"] = {commonMinerals},
-  ["minecraft:dirt"] = {commonMinerals},
+  ["minecraft:cobblestone"] = {cobblestone},
+  ["minecraft:stone"] = {stone, building},
+  ["minecraft:dirt"] = {dirt},
   ["minecraft:sand"] = {commonMinerals, smelt},
   ["minecraft:gravel"] = {commonMinerals, flintMaker},
 
@@ -93,7 +108,8 @@ while true do
 
     for i = 1, #destinations do
       goToLocation(destinations[i])
-      if put(destinations[i][4]) then
+      put(destinations[i][4])
+      if turtle.getItemCount() == 0 then
         delivered = true
         break
       end
@@ -104,6 +120,8 @@ while true do
       put(trash[4])
     end
   end
+
+  goToLocation(source)
 
   while not take() do
     os.sleep(30)
