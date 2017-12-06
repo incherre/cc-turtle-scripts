@@ -39,7 +39,7 @@ local cowFarm = trash --TODO, temp set to trash
 
 local sortingKey = {
   ["minecraft:sapling"] = {organics, fuel},
-  ["minecraft:seeds"] = {organics},
+  ["minecraft:wheat_seeds"] = {organics},
   ["minecraft:log"] = {organics, smelt},
   ["minecraft:wheat"] = {organics, cowFarm},
 

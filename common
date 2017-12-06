@@ -206,7 +206,7 @@ end
 function sendLog(id, message)
   rednet.open("left")
   if rednet.isOpen("left") then
-    rednet.send(id, message)
+    rednet.send(id, message, "turtle_report")
     rednet.close()
     return true
   else
