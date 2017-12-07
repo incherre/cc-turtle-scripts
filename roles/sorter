@@ -42,6 +42,7 @@ local sortingKey = {
   ["minecraft:wheat_seeds"] = {organics},
   ["minecraft:log"] = {organics, smelt},
   ["minecraft:wheat"] = {organics, cowFarm},
+  ["minecraft:nether_wart"] = {potions, nether},
 
   ["minecraft:cobblestone"] = {cobblestone},
   ["minecraft:stone"] = {stone, building},
