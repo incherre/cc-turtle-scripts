@@ -33,9 +33,9 @@ local nether = {5, 63, 194, 1}
 
 local fuel = {4, 61, 198, 3}
 local smelt = {4, 62, 199, 3}
+local cowFarm = {4, 61, 194, 3}
 local flintMaker = trash --TODO, temp set to trash
 local compressor =  misc --TODO, temp set to misc
-local cowFarm = trash --TODO, temp set to trash
 
 local sortingKey = {
   ["minecraft:sapling"] = {organics, fuel},
@@ -49,6 +49,7 @@ local sortingKey = {
   ["minecraft:dirt"] = {dirt},
   ["minecraft:sand"] = {commonMinerals, smelt},
   ["minecraft:gravel"] = {commonMinerals, flintMaker},
+  ["minecraft:flint"] = {commonMinerals},
 
   ["minecraft:coal"] = {fuel, uncommonMinerals},
   ["minecraft:redstone"] = {uncommonMinerals, compressor},
