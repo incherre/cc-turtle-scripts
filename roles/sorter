@@ -14,8 +14,8 @@ local source = {5, 61, 199, 2}
 local misc = {5, 61, 194, 1}
 local trash = {5, 62, 194, 0}
 
-local commonMinerals = {5, 63, 199, 1}
-local uncommonMinerals = {5, 62, 199, 1}
+local uncommonMinerals = {5, 63, 199, 1}
+local commonMinerals = {5, 62, 199, 1}
 local cobblestone = {5, 61, 199, 1}
 local organics = {5, 63, 198, 1}
 local dirt = {5, 62, 198, 1}
@@ -58,6 +58,7 @@ local sortingKey = {
   ["minecraft:iron_ingot"] = {uncommonMinerals},
   ["minecraft:gold_ore"] = {smelt, uncommonMinerals},
   ["minecraft:gold_ingot"] = {uncommonMinerals},
+  ["minecraft:dye"] = {uncommonMinerals, enchanting, dyes},
 
   --["minecraft:"] = {},
 }
