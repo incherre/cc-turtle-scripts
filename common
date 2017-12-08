@@ -84,6 +84,48 @@ function pointNorth() --north is negative z
   
   return true
 end
+
+--This function return the direction the turtle was pointing
+function getDir() --north is negative z
+  local sx, sy, sz = getIntLoc()
+  local turns
+  local dir
+
+  if turtle.forward() then
+    turns = 0
+  elseif turtle.turnRight() and turtle.forward() then
+    turns = 1
+  elseif turtle.turnRight() and turtle.forward() then
+    turns = 2
+  elseif turtle.turnRight() and turtle.forward() then
+    turns = 3
+  else
+    return false
+  end
+  
+  local nx, ny, nz = getIntLoc()
+  turtle.back()
+
+  if sx == nx and sy == ny and sz == nz then
+    return false
+  elseif sz > nz then
+    dir = 0
+  elseif sz < nz then
+    dir = 2
+  elseif sx > nx then
+    dir = 3
+  elseif sx < nx then
+    dir = 1
+  end
+  
+  dir = dir + 4
+  for i = 1, turns do
+    turtle.turnLeft()
+    dir = dir - 1
+  end
+
+  return dir % 4
+end
   
 
 
