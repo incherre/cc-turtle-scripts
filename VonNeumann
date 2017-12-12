@@ -1,0 +1,193 @@
+--Von Neumann Probe v0.3
+--This program allows turtles to exploit a glitch with hoppers in Minecraft 1.8.9 to self replicate
+
+local function placeItemHelper(name, placeFunct)
+  local item
+  local oldSlot = turtle.getSelectedSlot()
+
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item and item.name == name then
+      turtle.select(i)
+      placeFunct()
+      turtle.select(oldSlot)
+      return true
+    end
+  end
+  turtle.select(oldSlot)
+  return false
+end
+
+local function placeItem(name)
+  return placeItemHelper(name, turtle.place)
+end
+
+local function placeItemUp(name)
+  return placeItemHelper(name, turtle.placeUp)
+end
+
+local function placeItemDown(name)
+  return placeItemHelper(name, turtle.placeDown)
+end
+
+local function getItems()
+  local items = {}
+  local item
+
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item then
+      items[item.name] = i
+    end
+  end
+
+  return items
+end
+
+local function dropAt(name, pos)
+  local items = getItems()
+  local placedCount = 0
+  local oldSlot = turtle.getSelectedSlot()
+
+  for item, slot in pairs(items) do
+    if placedCount >= (pos - 1) then
+      break
+    elseif item ~= name then
+      turtle.select(slot)
+      turtle.drop()
+      placedCount = placedCount + 1
+    end
+  end
+  
+  turtle.select(items[name])
+  turtle.drop(1)
+  turtle.select(oldSlot)
+
+  for i = 1, (pos - 1) do
+    turtle.suck()
+  end
+end
+
+local function travel()
+  local rotation = math.random(4) -- One to four
+  local distance = math.random(20) --19 + math.random(181) -- Twenty to two-hundred
+
+  for i = 1, rotation do
+    turtle.turnRight()
+  end
+
+  for i = 1, distance do
+    if not turtle.forward() then
+      break
+    end
+  end
+  
+  for i = 1, 3 do
+    turtle.up()
+  end
+end
+
+local function orient()
+  while turtle.up() do end
+
+  local oldSlot = turtle.getSelectedSlot()
+  for i = 1, 16 do
+    turtle.select(i)
+    turtle.dropUp()
+  end
+  turtle.select(oldSlot)
+end
+
+local function buildCopier()
+  placeItemUp("minecraft:chest")
+  placeItem("minecraft:chest")
+  turtle.down()
+  turtle.down()
+  placeItem("minecraft:chest")
+  turtle.up()
+  placeItem("minecraft:hopper")
+  turtle.up()
+
+  local item
+  local oldSlot = turtle.getSelectedSlot()
+  local placedPaper, placedRedstone = false, false
+
+  for i = 16, 1, -1 do
+    item = turtle.getItemDetail(i)
+    if item and item.name == "minecraft:paper" and not placedPaper then
+      turtle.select(i)
+      turtle.transferTo(11)
+      placedPaper = true
+    elseif item and item.name == "minecraft:redstone" and not placedRedstone then
+      turtle.select(i)
+      turtle.transferTo(7)
+      placedRedstone = true
+    elseif item then
+      turtle.select(i)
+      turtle.dropUp()
+    end
+  end
+
+  turtle.select(oldSlot)
+  turtle.craft(1)
+
+  while turtle.suckUp() do end
+
+  for i = 1, 3 do turtle.down() end
+  placeItemDown("computercraft:CC-Peripheral")
+
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item and item.name == "computercraft:disk" then
+      turtle.select(i)
+      turtle.dropDown(1)
+      break
+    end
+  end
+
+  turtle.select(oldSlot)
+
+  fs.copy(shell.getRunningProgram(), "disk/VonNeumann")
+  local startFile = fs.open("disk/startup", "w")
+  startFile.writeLine("os.setComputerLabel(\"VonNeumann\")")
+  startFile.writeLine("fs.copy(\"disk/VonNeumann\", \"startup\")")
+  startFile.writeLine("shell.run(\"startup\")")
+  startFile.close()
+
+  for i = 1, 3 do turtle.up() end
+end
+
+local function refillCopier()
+  print("refillCopier not completed")
+  error()
+end
+
+local function buildTurtle()
+  print("buildTurtle not completed")
+  error()
+end
+
+--Program start
+local items = getItems()
+if not (items["minecraft:paper"] and items["minecraft:redstone"] and
+        items["minecraft:hopper"] and items["minecraft:chest"] and
+        items["minecraft:coal_block"] and items["computercraft:CC-Peripheral"] and
+        items["computercraft:CC-TurtleAdvanced"]) then
+  print("Paper, redstone, hoppers, chests, coal blocks, disk drives, and advanced turtles required to operate.")
+  error()
+end
+
+if not fs.exists("built") then
+  travel()
+  buildCopier()
+  local built = fs.open("built", "w")
+  built.write("built")
+  built.close()
+else
+  orient()
+end
+
+while true do
+  refillCopier()
+  buildTurtle()
+end
