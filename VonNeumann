@@ -1,5 +1,16 @@
---Von Neumann Probe v0.3
+--Von Neumann Probe v0.4
 --This program allows turtles to exploit a glitch with hoppers in Minecraft 1.8.9 to self replicate
+
+local function selectItem(name)
+  local item
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item and item.name == name then
+      select(i)
+      break
+    end
+  end
+end
 
 local function placeItemHelper(name, placeFunct)
   local item
@@ -145,8 +156,6 @@ local function buildCopier()
     end
   end
 
-  turtle.select(oldSlot)
-
   fs.copy(shell.getRunningProgram(), "disk/VonNeumann")
   local startFile = fs.open("disk/startup", "w")
   startFile.writeLine("os.setComputerLabel(\"VonNeumann\")")
@@ -155,12 +164,121 @@ local function buildCopier()
   startFile.close()
 
   for i = 1, 3 do turtle.up() end
+
+  for i = 1, 16 do
+    turtle.select(i)
+    turtle.dropUp()
+  end
+
+  turtle.select(oldSlot)
+end
+
+local function refuel(n)
+  local item
+  local oldSlot = turtle.getSelectedSlot()
+
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item and item.name == "minecraft:coal_block" then
+      turtle.select(i)
+      turtle.refuel(n)
+      break
+    end
+  end
+
+  turtle.select(oldSlot)
+end
+
+local function getFromAbove(name) --possibly unused
+  local item
+  local oldSlot = turtle.getSelectedSlot()
+
+  for i = 1, 16 do
+    turtle.select(i)
+    turtle.suckUp(i)
+    item = turtle.getItemDetail()
+
+    if not item then
+      break
+    elseif item and item.name == name then
+      break
+    end
+  end
+
+  for i = 1, 16 do
+    item = turtle.getItemDetail(i)
+    if item and item.name ~= name then
+      turtle.select(i)
+      turtle.dropUp()
+    elseif item and item.name == name then
+      turtle.select(i)
+      turtle.transferTo(1)
+    end
+  end
+
+  turtle.select(oldSlot)
 end
 
 local function refillCopier()
-  print("refillCopier not completed")
-  error()
+  local coal = "minecraft:coal_block"
+
+  while turtle.suckUp() do end
+  turtle.down()
+  redstone.setOutput("front", true)
+  while turtle.suck() do end
+  dropAt(coal, 5)
+  dropAt(coal, 4)
+  dropAt(coal, 3)
+  dropAt(coal, 2)
+  selectItem(coal)
+  turtle.drop(28)
+  redstone.setOutput("front", false)
+  turtle.up()
+  
+  local item
+  for i = 16, 1, -1 do
+    item = turtle.getItemDetail(i)
+    if item and item.name ~= coal then
+      turtle.select(i)
+      turtle.dropUp()
+    elseif item and item.name == coal then
+      turtle.select(i)
+      turtle.transferTo(11)
+    end
+  end
+
+  turtle.select(1)
+
+  local strikes = 0
+  while strikes < 3 do
+    while turtle.craft() do
+      while turtle.getItemCount() > 0 do
+        turtle.drop()
+        if turtle.getItemCount() > 0 then
+          strikes = strikes + 1
+          os.sleep(2)
+        end
+      end
+    end
+
+    turtle.down()
+    turtle.down()
+
+    while turtle.getItemCount() < 64 do
+      turtle.suck()
+    end
+
+    if turtle.getFuelLevel() < 100 then
+      refuel(32)
+    end
+
+    turtle.transferTo(11)
+
+    turtle.up()
+    turtle.up()
+  end
 end
+
 
 local function buildTurtle()
   print("buildTurtle not completed")
@@ -178,12 +296,14 @@ if not (items["minecraft:paper"] and items["minecraft:redstone"] and
 end
 
 if not fs.exists("built") then
+  if turtle.getFuelLevel() < 500 then refuel(64) end
   travel()
   buildCopier()
   local built = fs.open("built", "w")
   built.write("built")
   built.close()
 else
+  if turtle.getFuelLevel() < 50 then refuel(16) end
   orient()
 end
 
