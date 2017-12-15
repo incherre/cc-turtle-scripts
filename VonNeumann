@@ -1,6 +1,7 @@
---Von Neumann Probe v0.5
+--Von Neumann Probe v0.6
 --This program allows turtles to exploit a glitch with hoppers in Minecraft 1.8.9 to self replicate
 
+--This function selects an item by name if it exists and returns whether it was successful
 local function selectItem(name)
   local item
   for i = 1, 16 do
@@ -13,35 +14,35 @@ local function selectItem(name)
   return false
 end
 
+--This is a helper function for the place item functions
 local function placeItemHelper(name, placeFunct)
-  local item
   local oldSlot = turtle.getSelectedSlot()
 
-  for i = 1, 16 do
-    item = turtle.getItemDetail(i)
-    if item and item.name == name then
-      turtle.select(i)
-      placeFunct()
-      turtle.select(oldSlot)
-      return true
-    end
+  local found = selectItem(name)
+  if found then
+    placeFunct()
   end
+
   turtle.select(oldSlot)
-  return false
+  return found
 end
 
+--This function places an item by name in front
 local function placeItem(name)
   return placeItemHelper(name, turtle.place)
 end
 
+--This function places an item by name above
 local function placeItemUp(name)
   return placeItemHelper(name, turtle.placeUp)
 end
 
+--This function places an item by name below
 local function placeItemDown(name)
   return placeItemHelper(name, turtle.placeDown)
 end
 
+--This function returns a table with item names as the key and location as the value
 local function getItems()
   local items = {}
   local item
@@ -56,6 +57,8 @@ local function getItems()
   return items
 end
 
+--This function puts one of a specific item at the specific position in an external inventory
+--That inventory should be empty and the turtle needs several other items that do not stack with the specified item
 local function dropAt(name, pos)
   local items = getItems()
   local placedCount = 0
@@ -80,9 +83,10 @@ local function dropAt(name, pos)
   end
 end
 
+--This function sends the turtle to some random location to build a new setup
 local function travel()
   local rotation = math.random(4) -- One to four
-  local distance = math.random(20) --19 + math.random(181) -- Twenty to two-hundred
+  local distance = 19 + math.random(181) -- Twenty to two-hundred
 
   for i = 1, rotation do
     turtle.turnRight()
@@ -99,8 +103,13 @@ local function travel()
   end
 end
 
+--This function moves the turtle to the starting position
 local function orient()
-  while turtle.up() do end
+  for i = 1, 3 do 
+    if not turtle.up() then
+      break
+    end
+  end
 
   local oldSlot = turtle.getSelectedSlot()
   for i = 1, 16 do
@@ -110,6 +119,7 @@ local function orient()
   turtle.select(oldSlot)
 end
 
+--This function builds the item duplication and turtle reprogramming setup
 local function buildCopier()
   placeItemUp("minecraft:chest")
   placeItem("minecraft:chest")
@@ -161,7 +171,9 @@ local function buildCopier()
   local startFile = fs.open("disk/startup", "w")
   startFile.writeLine("os.setComputerLabel(\"VonNeumann\")")
   startFile.writeLine("fs.copy(\"disk/VonNeumann\", \"startup\")")
-  startFile.writeLine("shell.run(\"startup\")")
+  --startFile.writeLine("shell.run(\"startup\")") --Disabled for testing purposes
+  startFile.writeLine("shell.run(\"refuel\", \"all\")") --Added for testing purposes
+  startFile.writeLine("for i = 1, 16 do turtle.forward() end") --Added for testing purposes
   startFile.close()
 
   for i = 1, 3 do turtle.up() end
@@ -174,6 +186,7 @@ local function buildCopier()
   turtle.select(oldSlot)
 end
 
+--This function finds some coal blocks and uses up to n of them to refuel itself
 local function refuel(n)
   local item
   local oldSlot = turtle.getSelectedSlot()
@@ -190,36 +203,7 @@ local function refuel(n)
   turtle.select(oldSlot)
 end
 
-local function getFromAbove(name) --possibly unused
-  local item
-  local oldSlot = turtle.getSelectedSlot()
-
-  for i = 1, 16 do
-    turtle.select(i)
-    turtle.suckUp(i)
-    item = turtle.getItemDetail()
-
-    if not item then
-      break
-    elseif item and item.name == name then
-      break
-    end
-  end
-
-  for i = 1, 16 do
-    item = turtle.getItemDetail(i)
-    if item and item.name ~= name then
-      turtle.select(i)
-      turtle.dropUp()
-    elseif item and item.name == name then
-      turtle.select(i)
-      turtle.transferTo(1)
-    end
-  end
-
-  turtle.select(oldSlot)
-end
-
+--This function refills the item copier
 local function refillCopier()
   local coal = "minecraft:coal_block"
 
@@ -236,15 +220,19 @@ local function refillCopier()
   redstone.setOutput("front", false)
   turtle.up()
   
+  local needCoal = true
   local item
   for i = 16, 1, -1 do
     item = turtle.getItemDetail(i)
-    if item and item.name ~= coal then
-      turtle.select(i)
-      turtle.dropUp()
-    elseif item and item.name == coal then
+    if item and item.name == coal and needCoal then
       turtle.select(i)
       turtle.transferTo(11)
+      if turtle.getItemCount(11) >= 64 then
+        needCoal = false
+      end
+    elseif item
+      turtle.select(i)
+      turtle.dropUp()
     end
   end
 
@@ -284,6 +272,7 @@ local function refillCopier()
   end
 end
 
+--This function uses the item copier to make a new stack of the specified item
 local function makeStack(name)
   redstone.setOutput("front", true)
   while turtle.suck() do end
@@ -307,6 +296,7 @@ local function makeStack(name)
   end
 end
 
+--This function makes a turtle, places it, and fills it with everything it needs to make more turtles
 local function buildTurtle()
   local paper = "minecraft:paper"
   local redstone = "minecraft:redstone"
@@ -366,7 +356,7 @@ else
   orient()
 end
 
-while true do
+for i = 1, 4 do
   refillCopier()
   buildTurtle()
 end
