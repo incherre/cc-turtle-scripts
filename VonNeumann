@@ -1,4 +1,4 @@
---Von Neumann Probe v0.4
+--Von Neumann Probe v0.5
 --This program allows turtles to exploit a glitch with hoppers in Minecraft 1.8.9 to self replicate
 
 local function selectItem(name)
@@ -6,10 +6,11 @@ local function selectItem(name)
   for i = 1, 16 do
     item = turtle.getItemDetail(i)
     if item and item.name == name then
-      select(i)
-      break
+      turtle.select(i)
+      return true
     end
   end
+  return false
 end
 
 local function placeItemHelper(name, placeFunct)
@@ -261,28 +262,86 @@ local function refillCopier()
       end
     end
 
-    turtle.down()
-    turtle.down()
+    if strikes < 3 then
+      turtle.down()
+      turtle.down()
 
-    while turtle.getItemCount() < 64 do
-      turtle.suck()
+    
+      while turtle.getItemCount() < 64 do
+        turtle.suck()
+      end
+    
+
+      if turtle.getFuelLevel() < 100 then
+        refuel(32)
+      end
+
+      turtle.transferTo(11)
+
+      turtle.up()
+      turtle.up()
     end
-
-    if turtle.getFuelLevel() < 100 then
-      refuel(32)
-    end
-
-    turtle.transferTo(11)
-
-    turtle.up()
-    turtle.up()
   end
 end
 
+local function makeStack(name)
+  redstone.setOutput("front", true)
+  while turtle.suck() do end
+  dropAt(name, 5)
+  dropAt(name, 4)
+  dropAt(name, 3)
+  dropAt(name, 2)
+  selectItem(name)
+  turtle.drop()
+  redstone.setOutput("front", false)
+
+  turtle.down()
+  while not turtle.suck() do
+    os.sleep(1)
+  end
+  while not selectItem(name) do
+    turtle.suck()
+  end
+  while turtle.getItemCount() < 64 do
+    turtle.suck()
+  end
+end
 
 local function buildTurtle()
-  print("buildTurtle not completed")
-  error()
+  local paper = "minecraft:paper"
+  local redstone = "minecraft:redstone"
+  local hopper = "minecraft:hopper"
+  local chest = "minecraft:chest"
+  local coal_block = "minecraft:coal_block"
+  local disk_drive = "computercraft:CC-Peripheral"
+  local turtle_item = "computercraft:CC-TurtleAdvanced"
+
+  local item_load = {paper, redstone, hopper, chest, coal_block, disk_drive}
+
+  while turtle.suckUp() do end
+  turtle.down()
+
+  makeStack(turtle_item)
+  selectItem(turtle_item)
+  turtle.placeDown()
+  turtle.dropDown()
+  turtle.up()
+
+  for i, name in pairs(item_load) do
+    makeStack(name)
+    selectItem(name)
+    turtle.dropDown()
+    turtle.up()
+  end
+
+  makeStack(coal_block)
+  selectItem(coal_block)
+  turtle.dropDown()
+
+  peripheral.call("bottom", "turnOn")
+
+  turtle.up()
+  turtle.up()
 end
 
 --Program start
