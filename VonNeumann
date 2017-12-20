@@ -1,5 +1,8 @@
---Von Neumann Probe v0.6
+--Von Neumann Probe v0.8
 --This program allows turtles to exploit a glitch with hoppers in Minecraft 1.8.9 to self replicate
+
+local hasSecondaryFunction = false
+local secondaryFunction = ""
 
 --This function selects an item by name if it exists and returns whether it was successful
 local function selectItem(name)
@@ -167,13 +170,26 @@ local function buildCopier()
     end
   end
 
-  fs.copy(shell.getRunningProgram(), "disk/VonNeumann")
+  fs.copy(shell.getRunningProgram(), fs.combine("disk", "VonNeumann"))
+  if hasSecondaryFunction then
+    fs.copy(secondaryFunction, fs.combine("disk", secondaryFunction))
+  end
+
   local startFile = fs.open("disk/startup", "w")
   startFile.writeLine("os.setComputerLabel(\"VonNeumann\")")
   startFile.writeLine("fs.copy(\"disk/VonNeumann\", \"startup\")")
-  --startFile.writeLine("shell.run(\"startup\")") --Disabled for testing purposes
+
+  if hasSecondaryFunction then
+    commandstring = "fs.copy(\"disk/" .. secondaryFunction .. "\", \"" .. secondaryFunction .. "\")"
+    startFile.writeLine(commandstring)
+    --startFile.writeLine("shell.run(\"startup\", \"" .. secondaryFunction .. "\")") --Disabled for testing purposes
+  else
+    --startFile.writeLine("shell.run(\"startup\")") --Disabled for testing purposes
+  end
+
   startFile.writeLine("shell.run(\"refuel\", \"all\")") --Added for testing purposes
   startFile.writeLine("for i = 1, 16 do turtle.forward() end") --Added for testing purposes
+  
   startFile.close()
 
   for i = 1, 3 do turtle.up() end
@@ -335,8 +351,18 @@ local function buildTurtle()
 end
 
 --Program start
+local tArgs = { ... }
+if #tArgs >= 1 then
+  secondaryFunction = tArgs[1]
+  hasSecondaryFunction = true
+  if not fs.exists(secondaryFunction) then
+    print("The program " .. secondaryFunction .. " does not exist on this turtle.")
+    error()
+  end
+end
+
 local items = getItems()
-if not (items["minecraft:paper"] and items["minecraft:redstone"] and
+if not fs.exists("built") and not (items["minecraft:paper"] and items["minecraft:redstone"] and
         items["minecraft:hopper"] and items["minecraft:chest"] and
         items["minecraft:coal_block"] and items["computercraft:CC-Peripheral"] and
         items["computercraft:CC-TurtleAdvanced"]) then
@@ -359,4 +385,11 @@ end
 for i = 1, 4 do
   refillCopier()
   buildTurtle()
+end
+
+if hasSecondaryFunction then
+  orient()
+  fs.delete("startup")
+  fs.copy(secondaryFunction, "startup")
+  shell.run("startup")
 end
