@@ -1,6 +1,6 @@
 --This is a program to place ladders along a wall
-
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 hitC = false
 

@@ -1,5 +1,6 @@
 --A script for a sorting turtle
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local tArgs = { ... }
 if #tArgs ~= 1 or (#tArgs >= 1 and tArgs[1] == "help") then

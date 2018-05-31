@@ -1,4 +1,6 @@
-os.loadAPI("common")
+--A program for refueling from a pool of lava
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local tArgs = { ... }
 if #tArgs ~= 1 or (#tArgs >= 1 and tArgs[1] == "help") then

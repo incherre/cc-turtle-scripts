@@ -1,5 +1,6 @@
 --This is the startup script for the courier turtles
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local tArgs = { ... }
 if #tArgs ~= 9 or (#tArgs >= 1 and tArgs[1] == "help") then

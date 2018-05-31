@@ -1,5 +1,6 @@
 --This is the startup script for the farmer turtle
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local tArgs = { ... }
 if #tArgs ~= 6 or (#tArgs >= 1 and tArgs[1] == "help") then

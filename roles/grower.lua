@@ -1,5 +1,6 @@
 --A turtle to sit and grow trees
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local function isSapling()
   local success, block = turtle.inspect()

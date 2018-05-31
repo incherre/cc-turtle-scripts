@@ -170,25 +170,25 @@ local function buildCopier()
     end
   end
 
-  fs.copy(shell.getRunningProgram(), fs.combine("disk", "VonNeumann"))
+  fs.copy(shell.getRunningProgram(), fs.combine("disk", "VonNeumann.lua"))
   if hasSecondaryFunction then
     fs.copy(secondaryFunction, fs.combine("disk", secondaryFunction))
   end
 
   local startFile = fs.open("disk/startup", "w")
   startFile.writeLine("os.setComputerLabel(\"VonNeumann\")")
-  startFile.writeLine("fs.copy(\"disk/VonNeumann\", \"startup\")")
+  startFile.writeLine("fs.copy(\"disk/VonNeumann.lua\", \"startup\")")
 
   if hasSecondaryFunction then
     commandstring = "fs.copy(\"disk/" .. secondaryFunction .. "\", \"" .. secondaryFunction .. "\")"
     startFile.writeLine(commandstring)
-    --startFile.writeLine("shell.run(\"startup\", \"" .. secondaryFunction .. "\")") --Disabled for testing purposes
+    startFile.writeLine("shell.run(\"startup\", \"" .. secondaryFunction .. "\")") --Please disable for limited-expansion testing
   else
-    --startFile.writeLine("shell.run(\"startup\")") --Disabled for testing purposes
+    startFile.writeLine("shell.run(\"startup\")") --Please disable for limited-expansion testing
   end
 
-  startFile.writeLine("shell.run(\"refuel\", \"all\")") --Added for testing purposes
-  startFile.writeLine("for i = 1, 16 do turtle.forward() end") --Added for testing purposes
+  --startFile.writeLine("shell.run(\"refuel\", \"all\")") --Please enable for limited-expansion testing
+  --startFile.writeLine("for i = 1, 16 do turtle.forward() end") --Please enable for limited-expansion testing
   
   startFile.close()
 

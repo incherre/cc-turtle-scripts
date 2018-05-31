@@ -1,5 +1,6 @@
 --This is the startup script for the breeder turtle
-os.loadAPI("common")
+os.loadAPI("common.lua")
+local common = _G["common.lua"]
 
 local tArgs = { ... }
 if #tArgs ~= 5 or (#tArgs >= 1 and tArgs[1] == "help") then
